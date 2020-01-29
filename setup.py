@@ -63,7 +63,8 @@ setup(
     install_requires=[
         "tensorflow",
         "pandas",
-        "numpy"
+        "numpy",
+        "keras_bed_sequence"
     ],
     extras_require=extras,
 )
