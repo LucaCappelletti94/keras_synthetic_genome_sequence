@@ -26,14 +26,15 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-__version__ = find_version("keras_syntetic_genome_sequence", "__version__.py")
+__version__ = find_version("keras_synthetic_genome_sequence", "__version__.py")
 
-test_deps =[
+test_deps = [
     "pytest",
     "pytest-cov",
     "coveralls",
     "validate_version_code",
-    "codacy-coverage"
+    "codacy-coverage",
+    "silence_tensorflow"
 ]
 
 extras = {
@@ -41,11 +42,11 @@ extras = {
 }
 
 setup(
-    name='keras_syntetic_genome_sequence',
+    name='keras_synthetic_genome_sequence',
     version=__version__,
     description="Python package to lazily generate synthetic genomic sequences for training od Keras models.",
     long_description=long_description,
-    url="https://github.com/LucaCappelletti94/keras_syntetic_genome_sequence",
+    url="https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence",
     author="Luca Cappelletti",
     author_email="cappelletti.luca94@gmail.com",
     # Choose your license
