@@ -28,7 +28,7 @@ after_script:
 script:
 - rm -rf .coverage
 - coverage erase
-- pytest --cov=keras_synthetic_genome_sequence --cov-report xml:coverage.xml
+- pytest -s --cov=keras_synthetic_genome_sequence --cov-report xml:coverage.xml
 - coverage combine --append || true
 - coverage report
 - coverage xml
