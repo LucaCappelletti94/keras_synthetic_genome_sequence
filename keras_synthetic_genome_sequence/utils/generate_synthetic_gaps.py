@@ -98,4 +98,6 @@ def generate_synthetic_gaps(
             total=len(tasks),
             desc="Generating synthetic gaps"
         )))
+        p.close()
+        p.join()
     return indices
