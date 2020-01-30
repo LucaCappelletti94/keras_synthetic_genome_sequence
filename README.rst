@@ -74,7 +74,7 @@ We can retrieve these regions as follows:
     from ucsc_genomes_downloader import Genome
     from ucsc_genomes_downloader.utils import tasselize_bed
 
-    hg19 = Genome(assembly, chromosomes=["chr1"])
+    genome = Genome(assembly, chromosomes=["chr1"])
     ground_truth = tasselize_bed(genome.filled(), window_size=window_size)
 
 The obtained pandas DataFrame will have a bed-like format
