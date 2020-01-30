@@ -74,7 +74,7 @@ We can retrieve these regions as follows:
     from ucsc_genomes_downloader import Genome
     from ucsc_genomes_downloader.utils import tasselize_bed
 
-    hg19 = Genome(assembly, chromosomes=["chr1"])
+    genome = Genome(assembly, chromosomes=["chr1"])
     ground_truth = tasselize_bed(genome.filled(), window_size=window_size)
 
 The obtained pandas DataFrame will have a bed-like format
@@ -102,7 +102,7 @@ Now we are ready to actually create the GapSequence:
 
     gap_sequence = GapSequence(
         assembly=assembly,
-        ground_truth,
+        bed=ground_truth,
         gaps_mean=mean,
         gaps_covariance=covariance,
         batch_size=batch_size
