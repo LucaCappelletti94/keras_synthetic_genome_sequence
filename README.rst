@@ -158,12 +158,12 @@ is 0.4, the default value used within the python package.
     :target: https://coveralls.io/github/LucaCappelletti94/keras_synthetic_genome_sequence?branch=master
     :alt: Coveralls Coverage
 
-.. |pip| image:: https://badge.fury.io/py/keras_synthetic_genome_sequence.svg
-    :target: https://badge.fury.io/py/keras_synthetic_genome_sequence
+.. |pip| image:: https://badge.fury.io/py/keras-synthetic-genome-sequence.svg
+    :target: https://badge.fury.io/py/keras-synthetic-genome-sequence
     :alt: Pypi project
 
-.. |downloads| image:: https://pepy.tech/badge/keras_synthetic_genome_sequence
-    :target: https://pepy.tech/badge/keras_synthetic_genome_sequence
+.. |downloads| image:: https://pepy.tech/badge/keras-synthetic-genome-sequence
+    :target: https://pepy.tech/badge/keras-synthetic-genome-sequence
     :alt: Pypi total project downloads
 
 .. |codacy| image:: https://api.codacy.com/project/badge/Grade/7f2c4e2947834c05b5a869a9445482d0
