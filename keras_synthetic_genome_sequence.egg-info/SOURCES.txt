@@ -1,0 +1,14 @@
+MANIFEST.in
+README.rst
+setup.py
+keras_synthetic_genome_sequence/__init__.py
+keras_synthetic_genome_sequence/__version__.py
+keras_synthetic_genome_sequence/gap_sequence.py
+keras_synthetic_genome_sequence.egg-info/PKG-INFO
+keras_synthetic_genome_sequence.egg-info/SOURCES.txt
+keras_synthetic_genome_sequence.egg-info/dependency_links.txt
+keras_synthetic_genome_sequence.egg-info/requires.txt
+keras_synthetic_genome_sequence.egg-info/top_level.txt
+keras_synthetic_genome_sequence/utils/__init__.py
+keras_synthetic_genome_sequence/utils/generate_synthetic_gaps.py
+keras_synthetic_genome_sequence/utils/get_gaps_statistics.py
