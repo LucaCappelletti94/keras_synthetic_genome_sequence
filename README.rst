@@ -102,7 +102,7 @@ Now we are ready to actually create the GapSequence:
 
     gap_sequence = GapSequence(
         assembly=assembly,
-        ground_truth,
+        bed=ground_truth,
         gaps_mean=mean,
         gaps_covariance=covariance,
         batch_size=batch_size
