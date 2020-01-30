@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: keras-synthetic-genome-sequence
-Version: 1.0.0
+Version: 1.0.1
 Summary: Python package to lazily generate synthetic genomic sequences for training od Keras models.
 Home-page: https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence
 Author: Luca Cappelletti
@@ -82,7 +82,7 @@ Description: keras_synthetic_genome_sequence
             from ucsc_genomes_downloader import Genome
             from ucsc_genomes_downloader.utils import tasselize_bed
         
-            hg19 = Genome(assembly, chromosomes=["chr1"])
+            genome = Genome(assembly, chromosomes=["chr1"])
             ground_truth = tasselize_bed(genome.filled(), window_size=window_size)
         
         The obtained pandas DataFrame will have a bed-like format
@@ -110,7 +110,7 @@ Description: keras_synthetic_genome_sequence
         
             gap_sequence = GapSequence(
                 assembly=assembly,
-                ground_truth,
+                bed=ground_truth,
                 gaps_mean=mean,
                 gaps_covariance=covariance,
                 batch_size=batch_size
@@ -166,12 +166,12 @@ Description: keras_synthetic_genome_sequence
             :target: https://coveralls.io/github/LucaCappelletti94/keras_synthetic_genome_sequence?branch=master
             :alt: Coveralls Coverage
         
-        .. |pip| image:: https://badge.fury.io/py/keras_synthetic_genome_sequence.svg
-            :target: https://badge.fury.io/py/keras_synthetic_genome_sequence
+        .. |pip| image:: https://badge.fury.io/py/keras-synthetic-genome-sequence.svg
+            :target: https://badge.fury.io/py/keras-synthetic-genome-sequence
             :alt: Pypi project
         
-        .. |downloads| image:: https://pepy.tech/badge/keras_synthetic_genome_sequence
-            :target: https://pepy.tech/badge/keras_synthetic_genome_sequence
+        .. |downloads| image:: https://pepy.tech/badge/keras-synthetic-genome-sequence
+            :target: https://pepy.tech/badge/keras-synthetic-genome-sequence
             :alt: Pypi total project downloads
         
         .. |codacy| image:: https://api.codacy.com/project/badge/Grade/7f2c4e2947834c05b5a869a9445482d0

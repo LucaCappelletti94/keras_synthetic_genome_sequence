@@ -42,6 +42,9 @@ def test_model_denoiser():
     assert (x1 == x2).all()
     assert (y1 == y2).all()
 
+    assert x1.shape == y1.shape
+    assert x1.shape == (batch_size, 200, 4)
+
     model = build_model()
     model.fit_generator(
         gap_sequence,
