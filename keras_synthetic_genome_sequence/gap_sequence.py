@@ -1,3 +1,4 @@
+"""Keras Sequence that returns tuples of nucleotide sequences, one with syntetic gaps and the other without as ground truth."""
 from typing import Union, Dict, Tuple
 import pandas as pd
 import numpy as np
@@ -7,13 +8,122 @@ from .utils import generate_synthetic_gaps
 
 
 class GapSequence(BedSequence):
+    """
+    Keras Sequence that returns tuples of nucleotide sequences,
+    one with syntetic gaps and the other without as ground truth.
+
+    Usage examples
+    -------------------------
+    To use GapSequence to train your keras model you
+    will need to obtain statistical metrics for the
+    biological gaps you intend to mimic in your synthetic gaps.
+
+    To achieve this, this package offers an utility called
+    get_gaps_statistics, which allows you to obtain the
+    mean and covariance of gaps in a given genomic assembly.
+
+    The genomic assembly is automatically downloaded from UCSC
+    using `ucsc_genomes_downloader <https://github.com/LucaCappelletti94/ucsc_genomes_downloader>`__,
+    then the gaps contained within are extracted and their windows
+    is expanded to the given one, after filtering for the given
+    max_gap_size, as you might want to limit the gaps size to
+    a relatively small one (gaps can get in the tens of thousands
+    of nucleotides, for instance in the telomeres).
+
+    Let's start by listing all the important parameters:
+
+    .. code:: python
+
+        assembly = "hg19"
+        window_size = 200
+        batch_size = 128
+
+    Now we can start by retrieving the gaps statistics:
+
+    .. code:: python
+
+        from keras_synthetic_genome_sequence.utils import get_gaps_statistics
+
+        number, mean, covariance = get_gaps_statistics(
+            assembly=assembly,
+            max_gap_size=100,
+            window_size=window_size
+        )
+
+        print("I have identified {number} gaps!".format(number=number))
+
+    Now you must choose the ground truth on which to apply the
+    synthetic gaps, for instance the regions without gaps in
+    the genomic assembly hg19, chromosome chr1.
+    These regions will have to be tasselized into smaller
+    chunks that are compatible with the shape you have chosen for
+    the gap statistics window_size.
+    We can retrieve these regions as follows:
+
+    .. code:: python
+
+        from ucsc_genomes_downloader import Genome
+        from ucsc_genomes_downloader.utils import tasselize_bed
+
+        hg19 = Genome(assembly, chromosomes=["chr1"])
+        ground_truth = tasselize_bed(genome.filled(), window_size=window_size)
+
+    The obtained pandas DataFrame will have a bed-like format
+    and look as follows:
+
+    +----+---------+--------------+------------+
+    |    | chrom   |   chromStart |   chromEnd |
+    +====+=========+==============+============+
+    |  0 | chr1    |        10000 |      10200 |
+    +----+---------+--------------+------------+
+    |  1 | chr1    |        10200 |      10400 |
+    +----+---------+--------------+------------+
+    |  2 | chr1    |        10400 |      10600 |
+    +----+---------+--------------+------------+
+    |  3 | chr1    |        10600 |      10800 |
+    +----+---------+--------------+------------+
+    |  4 | chr1    |        10800 |      11000 |
+    +----+---------+--------------+------------+
+
+    Now we are ready to actually create the GapSequence:
+
+    .. code:: python
+
+        from keras_synthetic_genome_sequence import GapSequence
+
+        gap_sequence = GapSequence(
+            assembly=assembly,
+            ground_truth,
+            gaps_mean=mean,
+            gaps_covariance=covariance,
+            batch_size=batch_size
+        )
+
+    Now, having a model that receives as
+    input and output shape (batch_size, window_size, 4),
+    we can train it as follows:
+
+    .. code:: python
+
+        model = build_my_denoiser()
+        model.fit_generator(
+            gap_sequence,
+            steps_per_epoch=gap_sequence.steps_per_epoch,
+            epochs=2,
+            shuffle=True
+        )
+
+    Happy denoising!
+
+    """
+
     def __init__(
         self,
         assembly: str,
         bed: Union[pd.DataFrame, str],
         gaps_mean: np.ndarray,
         gaps_covariance: np.ndarray,
-        gaps_threshold: float = 0.5,
+        gaps_threshold: float = 0.4,
         batch_size: int = 32,
         verbose: bool = True,
         seed: int = 42,
@@ -68,14 +178,14 @@ class GapSequence(BedSequence):
         )
         if len(gaps_mean) != self.window_length:
             raise ValueError(
-                "Given gaps mean vector length ({mean_len}) does not batch given bed file window length ({window_len}).".format(
+                "Mean len({mean_len}) does not match bed file window len({window_len}).".format(
                     mean_len=len(gaps_mean),
                     window_len=self.window_length,
                 )
             )
         if len(gaps_covariance) != self.window_length:
             raise ValueError(
-                "Given gaps covariance vector length ({covariance_len}) does not batch given bed file window length ({window_len}).".format(
+                "Covariance len({covariance_len}) does not match bed file window len({window_len}).".format(
                     covariance_len=len(gaps_covariance),
                     window_len=self.window_length,
                 )
@@ -123,8 +233,19 @@ class GapSequence(BedSequence):
         masks = self._gaps_coordinates[
             np.in1d(self._gaps_coordinates[:, 0], indices)
         ]
+        # Making a deep copy of y, since we are going to edit the copy.
         x = np.copy(y)
+        # For every j-th index curresponding to the i-th row of current batch
         for i, index in enumerate(indices):
+            # We extract the mask curresponding to the gaps
+            # for the i-th row of current batch
             gap_indices = masks[masks[:, 0] == index][:, 1]
+            # And we set the one-hot encoded nucleotides as
+            # a uniform distribution.
             x[i, gap_indices, :] = 0.25
+        # We return the tuple of the batch, containing
+        # the input with added artificial gaps represented
+        # as a uniform distribution and
+        # the output containing the original one-hot encoded
+        # sequence of nucleotides.
         return x, y

@@ -96,7 +96,9 @@ def generate_synthetic_gaps(
         indices = np.vstack(list(tqdm(
             p.imap(_generate_synthetic_gaps_wrapper, tasks),
             total=len(tasks),
-            desc="Generating synthetic gaps"
+            desc="Generating synthetic gaps",
+            leave=False,
+            dynamic_ncols=True
         )))
         p.close()
         p.join()
