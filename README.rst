@@ -132,7 +132,10 @@ gaps with length to up 100 nucleotides and total window size 1000.
 The threshold used to convert to integer the multivariate gaussian distribution
 is 0.4, the default value used within the python package.
 
-.. image:: ....
+.. image:: https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence/blob/master/distributions/hg19.png?raw=true
+.. image:: https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence/blob/master/distributions/hg38.png?raw=true
+.. image:: https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence/blob/master/distributions/mm9.png?raw=true
+.. image:: https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence/blob/master/distributions/mm10.png?raw=true
 
 
 .. |travis| image:: https://travis-ci.org/LucaCappelletti94/keras_synthetic_genome_sequence.png
