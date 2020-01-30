@@ -1,4 +1,4 @@
-"""Keras Sequence that returns tuples of nucleotide sequences, one with syntetic gaps and the other without as ground truth."""
+"""Keras Sequence that returns tuples of nucleotide sequences, one with synthetic gaps and the other without as ground truth."""
 from typing import Union, Dict, Tuple
 import pandas as pd
 import numpy as np
@@ -10,7 +10,7 @@ from .utils import generate_synthetic_gaps
 class GapSequence(BedSequence):
     """
     Keras Sequence that returns tuples of nucleotide sequences,
-    one with syntetic gaps and the other without as ground truth.
+    one with synthetic gaps and the other without as ground truth.
 
     Usage examples
     -------------------------
