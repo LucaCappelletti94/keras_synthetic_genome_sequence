@@ -72,10 +72,10 @@ We can retrieve these regions as follows:
 .. code:: python
 
     from ucsc_genomes_downloader import Genome
-    from ucsc_genomes_downloader.utils import tasselize_bed
+    from ucsc_genomes_downloader.utils import tessellate_bed
 
     genome = Genome(assembly, chromosomes=["chr1"])
-    ground_truth = tasselize_bed(genome.filled(), window_size=window_size)
+    ground_truth = tessellate_bed(genome.filled(), window_size=window_size)
 
 The obtained pandas DataFrame will have a bed-like format
 and look as follows:
