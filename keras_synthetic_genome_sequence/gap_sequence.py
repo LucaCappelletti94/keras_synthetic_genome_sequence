@@ -194,7 +194,7 @@ class GapSequence(BedSequence):
         self._gaps_coordinates = generate_synthetic_gaps(
             gaps_mean,
             gaps_covariance,
-            self.samples_nuber,
+            self.samples_number,
             chunk_size=50000,
             threshold=gaps_threshold,
             seed=seed
@@ -202,7 +202,7 @@ class GapSequence(BedSequence):
         # Rendering the starting gaps index, which
         # will be shuffled alongside the bed file.
         self._gaps_index = NumpySequence(
-            np.arange(self.samples_nuber),
+            np.arange(self.samples_number),
             batch_size=batch_size,
             seed=seed,
             elapsed_epochs=elapsed_epochs
