@@ -28,6 +28,6 @@ class SingleGapSequence(BedSequence):
         """
         # Retrieves the sequence from the bed generator
         x = super().__getitem__(idx)
-        y = x[:, self.window_length//2, :]
+        y = x[:, self.window_length//2].copy()
         x[:, self.window_length//2, :] = 0.25
         return x, y

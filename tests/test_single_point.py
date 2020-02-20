@@ -36,6 +36,7 @@ def test_model_denoiser():
 
     assert np.isclose(x1, 0.25).sum() == 4*batch_size
     assert (np.isclose(x1, 0.25).all(axis=2).argmax(axis=1) == 100).all()
+    assert 0.25 not in y1
     assert (x1 == x2).all()
     assert (y1 == y2).all()
 
