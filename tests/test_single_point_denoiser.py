@@ -1,7 +1,7 @@
 import os
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, Reshape, Conv2DTranspose
-from keras_synthetic_genome_sequence import GapSequence, SingleGapNoiseSequence
+from keras_synthetic_genome_sequence import SingleGapNoiseSequence
 from keras_synthetic_genome_sequence.utils import get_gaps_statistics
 import numpy as np
 import pandas as pd
@@ -23,21 +23,15 @@ def build_model():
 
 def test_model_denoiser():
     batch_size = 32
-    _, mean, covariance = get_gaps_statistics(
-        "hg19",
-        100,
-        200
-    )
     bed = pd.read_csv("{cwd}/test.bed".format(
         cwd=os.path.dirname(os.path.abspath(__file__))
     ), sep="\t")
-    gap_sequence = GapSequence(
+    gap_sequence = SingleGapNoiseSequence(
         "hg19",
         bed,
-        gaps_mean=mean,
-        gaps_covariance=covariance,
         batch_size=batch_size
     )
+    
     x1, y1 = gap_sequence[0]
     x2, y2 = gap_sequence[0]
 
