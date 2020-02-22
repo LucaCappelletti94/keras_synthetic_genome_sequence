@@ -4,13 +4,13 @@ from ucsc_genomes_downloader import Genome
 from ucsc_genomes_downloader.utils import expand_bed_regions
 
 
-def get_gaps_statistics(assembly: str, max_gap_size: int, window_size: int) -> Tuple[int, np.ndarray, np.ndarray]:
+def get_gaps_statistics(genome: Genome, max_gap_size: int, window_size: int) -> Tuple[int, np.ndarray, np.ndarray]:
     """Return number, mean and covariance of gaps.
 
     Parameters
     --------------------------
-    assembly:str,
-        The genomic assembly to download.
+    genome:Genome,
+        The genome to use.
     max_gap_size:int,
         The maximum gap size to take in consideration.
     window_size:int
@@ -20,8 +20,6 @@ def get_gaps_statistics(assembly: str, max_gap_size: int, window_size: int) -> T
     --------------------------
     Returns Tuple containing number of gaps, mean and covariance.
     """
-    # Retrieving genome
-    genome = Genome(assembly)
     # Obtaining gaps
     gaps = genome.gaps()
     # Getting gaps whose size is below given threshold

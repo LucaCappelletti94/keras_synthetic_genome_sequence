@@ -1,4 +1,4 @@
-"""Keras Sequence that returns tuples of nucleotide sequences, one with a synthetic gap in the middle and the other containing the corresponding value."""
+"""Keras Sequence that returns tuples of nucleotide sequences, one with a synthetic gap in the middle and the other the original sequence."""
 from typing import Union, Dict, Tuple
 import pandas as pd
 import numpy as np
@@ -7,11 +7,11 @@ from keras_mixed_sequence.utils import NumpySequence
 from .utils import generate_synthetic_gaps
 
 
-class SingleGapSequence(BedSequence):
+class SingleGapWindowsSequence(BedSequence):
     """
     Keras Sequence that returns tuples of nucleotide sequences,
     one with a single nucleotide gap in the middle
-    and the other containing the corresponding value.
+    and the other the original sequence.
     """
 
     def __getitem__(self, idx: int) -> Tuple[np.ndarray, np.ndarray]:
@@ -28,6 +28,6 @@ class SingleGapSequence(BedSequence):
         """
         # Retrieves the sequence from the bed generator
         x = super().__getitem__(idx)
-        y = x[:, self.window_length//2].copy()
+        y = x.copy()
         x[:, self.window_length//2, :] = 0.25
         return x, y

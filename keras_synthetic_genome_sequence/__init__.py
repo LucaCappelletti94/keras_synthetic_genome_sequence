@@ -1,5 +1,11 @@
-from .gap_sequence import GapSequence
-from .single_gap_sequence import SingleGapSequence
-from .single_gap_noise_sequence import SingleGapNoiseSequence
+from .multivariate_gap_center_sequence import MultivariateGapCenterSequence
+from .multivariate_gap_windows_sequence import MultivariateGapWindowsSequence
+from .single_gap_center_sequence import SingleGapCenterSequence
+from .single_gap_windows_sequence import SingleGapWindowsSequence
 
-__all__ = ["GapSequence", "SingleGapSequence", "SingleGapNoiseSequence"]
+__all__ = [
+    "MultivariateGapCenterSequence",
+    "MultivariateGapWindowsSequence",
+    "SingleGapCenterSequence",
+    "SingleGapWindowsSequence"
+]
