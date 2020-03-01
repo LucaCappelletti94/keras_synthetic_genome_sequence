@@ -65,7 +65,7 @@ setup(
         "pandas",
         "numpy",
         "numba",
-        "keras_bed_sequence>=1.0.13"
+        "keras_bed_sequence>=1.1.0"
     ],
     extras_require=extras,
 )

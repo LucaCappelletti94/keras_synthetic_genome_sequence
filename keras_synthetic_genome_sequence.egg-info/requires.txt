@@ -1,7 +1,8 @@
 tensorflow
 pandas
 numpy
-keras_bed_sequence>=1.0.13
+numba
+keras_bed_sequence>=1.1.0
 
 [test]
 pytest

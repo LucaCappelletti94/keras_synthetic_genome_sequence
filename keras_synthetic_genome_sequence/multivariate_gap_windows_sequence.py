@@ -37,14 +37,12 @@ class MultivariateGapWindowsSequence(MultivariateGapSequence):
         y = super().__getitem__(idx)
         # Retrieve the indices corresponding to the gaps for the current batchsize
         indices = self._gaps_index[idx]
-        # Get the boolean masks for the original positions that contain the gaps
-        # for the given index
-        masks = self._original_indices == indices[:, None]
         # Get the mask to drop the rows where none of the indices
         # considered for this specific batch is present
-        considered_rows = masks.any(axis=0)
+        considered_rows = np.in1d(self._original_indices, indices)
+        # Extract the gaps curresponding to given indices
+        indices_masks = self._original_indices[considered_rows] == indices[:, None]
         # Drop rows where none of the indices is present
-        indices_masks = masks[:, considered_rows]
         coordinates = self._coordinates[considered_rows]
         # For i-th row of current batch we apply the nucletides mask
         x = add_gaps(indices_masks, y, coordinates)
