@@ -64,6 +64,7 @@ setup(
         "tensorflow",
         "pandas",
         "numpy",
+        "numba",
         "keras_bed_sequence>=1.0.13"
     ],
     extras_require=extras,

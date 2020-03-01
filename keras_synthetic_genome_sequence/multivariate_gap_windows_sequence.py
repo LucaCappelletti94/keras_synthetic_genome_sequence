@@ -4,7 +4,16 @@ import pandas as pd
 import numpy as np
 from .multivariate_gap_sequence import MultivariateGapSequence
 from .utils import generate_synthetic_gaps
+from numba import njit
 
+@njit
+def add_gaps(indices_masks:np.ndarray, y:np.ndarray, coordinates:np.ndarray):
+    # Making a deep copy of y, since we are going to edit the copy.
+    x = np.copy(y)
+    for i in range(indices_masks.shape[0]):
+        for j in coordinates[indices_masks[i]]:
+            x[i][j] = 0.25
+    return x
 
 class MultivariateGapWindowsSequence(MultivariateGapSequence):
     """
@@ -37,9 +46,6 @@ class MultivariateGapWindowsSequence(MultivariateGapSequence):
         # Drop rows where none of the indices is present
         indices_masks = masks[:, considered_rows]
         coordinates = self._coordinates[considered_rows]
-        # Making a deep copy of y, since we are going to edit the copy.
-        x = np.copy(y)
         # For i-th row of current batch we apply the nucletides mask
-        for i, indices_mask in enumerate(indices_masks):
-            x[i, coordinates[indices_mask]] = 0.25
+        x = add_gaps(indices_masks, y, coordinates)
         return x, y
