@@ -87,14 +87,14 @@ class MultivariateGapSequence(BedSequence):
                 )
             )
         # Rendering the gaps coordinates
-        self._gaps_coordinates = generate_synthetic_gaps(
+        self._original_indices, self._coordinates = generate_synthetic_gaps(
             gaps_mean,
             gaps_covariance,
             self.samples_number,
             chunk_size=50000,
             threshold=gaps_threshold,
             seed=seed
-        )
+        ).T
         # Rendering the starting gaps index, which
         # will be shuffled alongside the bed file.
         self._gaps_index = NumpySequence(
