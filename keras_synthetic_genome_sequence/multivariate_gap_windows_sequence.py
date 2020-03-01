@@ -29,22 +29,13 @@ class MultivariateGapWindowsSequence(MultivariateGapSequence):
         # Retrieve the indices corresponding to the gaps for the current batchsize
         indices = self._gaps_index[idx]
         # Extract the gaps curresponding to given indices
-        masks = self._gaps_coordinates[
-            np.in1d(self._gaps_coordinates[:, 0], indices)
-        ]
+        masks = self._gaps_coordinates[:, 0] == indices[:, None]
+        considered_rows = masks.any(axis=0)
+        indices_masks = masks[:, considered_rows]
+        positions = self._gaps_coordinates[:, 1][considered_rows]
         # Making a deep copy of y, since we are going to edit the copy.
         x = np.copy(y)
         # For every j-th index curresponding to the i-th row of current batch
-        for i, index in enumerate(indices):
-            # We extract the mask curresponding to the gaps
-            # for the i-th row of current batch
-            gap_indices = masks[masks[:, 0] == index][:, 1]
-            # And we set the one-hot encoded nucleotides as
-            # a uniform distribution.
-            x[i, gap_indices] = 0.25
-        # We return the tuple of the batch, containing
-        # the input with added artificial gaps represented
-        # as a uniform distribution and
-        # the output containing the original one-hot encoded
-        # sequence of nucleotides.
+        for i, indices_mask in enumerate(indices_masks):
+            x[i, positions[indices_mask]] = 0.25
         return x, y
