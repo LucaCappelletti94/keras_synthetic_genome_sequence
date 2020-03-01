@@ -5,6 +5,8 @@ import numpy as np
 from keras_bed_sequence import BedSequence
 from keras_mixed_sequence.utils import NumpySequence
 from .utils import generate_synthetic_gaps
+from numba import types
+from numba.typed import Dict
 
 
 class MultivariateGapSequence(BedSequence):
@@ -87,21 +89,36 @@ class MultivariateGapSequence(BedSequence):
                 )
             )
         # Rendering the gaps coordinates
-        self._original_indices, self._coordinates = generate_synthetic_gaps(
+        self._gaps_coordinates = Dict.empty(
+            key_type=types.int_,
+            value_type=types.int_[:],
+        )
+        gaps_coordinates = generate_synthetic_gaps(
             gaps_mean,
             gaps_covariance,
             self.samples_number,
             chunk_size=50000,
             threshold=gaps_threshold,
             seed=seed
-        ).T
+        )
+        gaps_dictionary = {}
+        for x, y in gaps_coordinates:
+            if x not in gaps_dictionary:
+                gaps_dictionary[x] = []
+            gaps_dictionary[x].append(y)
+            
+        for key in gaps_dictionary:
+            gaps_dictionary[key] = np.array(gaps_dictionary[key], dtype=int)
+        
+        self._gaps_coordinates.update(gaps_dictionary)
         # Rendering the starting gaps index, which
         # will be shuffled alongside the bed file.
         self._gaps_index = NumpySequence(
-            np.arange(self.samples_number),
+            np.arange(self.samples_number, dtype=np.int),
             batch_size=batch_size,
             seed=seed,
-            elapsed_epochs=elapsed_epochs
+            elapsed_epochs=elapsed_epochs,
+            dtype=np.int
         )
 
     def on_epoch_end(self):
