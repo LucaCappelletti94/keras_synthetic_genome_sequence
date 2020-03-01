@@ -24,6 +24,9 @@ class MultivariateGapWindowsSequence(MultivariateGapSequence):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def _init_gaps_coordinates(self):
+        super()._init_gaps_coordinates()
         # Compiling NUMBA function
         add_gaps(self._gaps_coordinates,
                  self._gaps_index[0], super().__getitem__(0))

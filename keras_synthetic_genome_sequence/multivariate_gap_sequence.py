@@ -88,11 +88,7 @@ class MultivariateGapSequence(BedSequence):
                     window_len=self.window_length,
                 )
             )
-        # Rendering the gaps coordinates
-        self._gaps_coordinates = Dict.empty(
-            key_type=types.int_,
-            value_type=types.int_[:],
-        )
+        
         gaps_coordinates = generate_synthetic_gaps(
             gaps_mean,
             gaps_covariance,
@@ -110,7 +106,9 @@ class MultivariateGapSequence(BedSequence):
         for key in gaps_dictionary:
             gaps_dictionary[key] = np.array(gaps_dictionary[key], dtype=int)
         
-        self._gaps_coordinates.update(gaps_dictionary)
+        self._cacheable_gaps_coordinates = gaps_dictionary
+        self._gaps_coordinates = None
+        
         # Rendering the starting gaps index, which
         # will be shuffled alongside the bed file.
         self._gaps_index = NumpySequence(
@@ -121,7 +119,24 @@ class MultivariateGapSequence(BedSequence):
             dtype=np.int
         )
 
+    def _init_gaps_coordinates(self):
+        # Rendering the gaps coordinates
+        self._gaps_coordinates = Dict.empty(
+            key_type=types.int_,
+            value_type=types.int_[:],
+        )
+        self._gaps_coordinates.update(self._cacheable_gaps_coordinates)
+
+    def on_train_start(self, *args, **kwargs):
+        super().on_train_start()
+        self._init_gaps_coordinates()
+
     def on_epoch_end(self):
         """Shuffle private bed object on every epoch end."""
         super().on_epoch_end()
         self._gaps_index.on_epoch_end()
+
+    def __getitem__(self, idx):
+        if self._gaps_coordinates is None:
+            self._init_gaps_coordinates()
+        return super().__getitem__(idx)
