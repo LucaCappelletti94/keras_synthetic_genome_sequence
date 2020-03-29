@@ -131,6 +131,17 @@ class MultivariateGapSequence(BedSequence):
         super().on_train_start()
         self._init_gaps_coordinates()
 
+    @property
+    def batch_size(self) -> int:
+        """Return batch size to be rendered."""
+        return self._batch_size
+
+    @batch_size.setter
+    def batch_size(self, batch_size: int):
+        """Set batch size to given value."""
+        self._batch_size = batch_size
+        self._gaps_index.batch_size = batch_size
+
     def on_epoch_end(self):
         """Shuffle private bed object on every epoch end."""
         super().on_epoch_end()

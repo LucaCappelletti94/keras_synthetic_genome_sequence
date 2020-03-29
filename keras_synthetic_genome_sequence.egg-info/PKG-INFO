@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: keras-synthetic-genome-sequence
-Version: 1.1.3
+Version: 1.1.4
 Summary: Python package to lazily generate synthetic genomic sequences for training od Keras models.
 Home-page: https://github.com/LucaCappelletti94/keras_synthetic_genome_sequence
 Author: Luca Cappelletti
